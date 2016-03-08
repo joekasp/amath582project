@@ -28,7 +28,9 @@ Abstract
 
 \end{abstract}
 
-\section*{I.	Introduction and Overview}
+% SECTION I -- INTRODUCTION AND OVERVIEW
+
+\section*{I.	Introduction and Overview}  %J will write this
 
 %\begin{wrapfigure}{r}{0.38\textwidth}
 %Sets wrapped figure to the right of the page
@@ -40,8 +42,17 @@ Intro
 
 % SECTION II -- THEORETICAL BACKGROUND
 
-\section*{II.	Theoretical Background}
-\subsection*{Subsection I}
+\section*{II.	Theoretical Background}	%Camille and Shichao
+\subsection*{A.	An Introduction to Chemical Spectra}
+
+\subsubsection*{Infrared Spectroscopy}
+
+\subsubsection*{Visible Absorption Spectroscopy}
+
+\subsection*{B.	Compressive Sensing}	%J
+\subsubsection*{Theory}
+
+\subsubsection*{Application to Chemical Spectroscopy}
 
 
 
@@ -52,8 +63,24 @@ Intro
 
 
 % SECTION 4 -- COMPUTATIONAL RESULTS	
-
+%Here we will examine the results of the study for each of the discrete transforms examined listed explicitly in subsubsections.  
+%Included in each subsubsection will be the results of each of the sampling rates compared. 
 \section*{IV.	Computational Results}
+
+%IDEAL CASES
+
+\subsection*{A.	Ideal Data Cases}
+In order to test the validity of our CS algorithm for data reconstruction, we first applied it to idealized data sets represented by known linear combinations of sinusoidal functions. Having knowledge of the exact "signal" \emph{a priori} allows us to determine the sampling rates and discrete transforms that result in the best approximations under ideal conditions. 
+
+%\begin{figure}[H]
+%\includegraphics[scale = 0.8]{BWDerekVarSigma}
+%\caption{Four different values of $\sigma$ applied to linear Gaussian filter to denoise \emph{Figure 3}}
+%\end{figure}
+%\pagebreak
+
+% SIMULATED CASES
+
+\subsection*{B.	Simulated Infrared (IR) Spectra Cases}
 
 
 %\begin{figure}[H]
@@ -63,8 +90,24 @@ Intro
 %\pagebreak
 
 
+\subsection*{C.	Simulated Visible Absorption Spectra Cases}
+
+
+%\begin{figure}[H]
+%\includegraphics[scale = 0.8]{BWDerekVarSigma}
+%\caption{Four different values of $\sigma$ applied to linear Gaussian filter to denoise \emph{Figure 3}}
+%\end{figure}
+%\pagebreak
+
+
+
 %SECTION V. -- SUMMARY AND CONCLUSIONS
+%We need to be sure to include our comparison of transforms and sampling rates with some sort of
+%visualization in this section.  
+
 \section*{V.	Summary and Conclusions}
+
+
 \pagebreak
 %APPENDICES-----------------------------------------------------------------------------------------------
 
@@ -77,11 +120,11 @@ Intro
 % MATLAB CODE SECTION ------------------------------------------------------------------------------
 \section{MATLAB Code}
 \begin{verbatim}
-%Insert Matlab Code 
+%Insert Matlab Code Here.  Whitespace is retained within {Verbatim}
 
 \end{verbatim}
 
-\section{Custom MATLAB Functions}
+\section{Custom MATLAB Functions} 	%Use subsections for each one
 
 \subsection*{Custom MATLAB Function 1}
 
