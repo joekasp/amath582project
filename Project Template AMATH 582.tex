@@ -42,17 +42,17 @@ Abstract
 
 \par Things are not so bleak, however, as there is an abundance of mathematical techniques for reducing the scale of such problems. This study focuses on one such technique called \emph{Compressed Sensing} (CS) that is used in data analysis to reduce the necessary sampling rate. CS does this by assuming a high degree of sparsity in a signal and makes use of the $L^{1}$ norm minimization technique to locate the vector of signal transform coefficients that is the most sparse.  
 
- As CS is frequently applied to time-frequency analysis problems, we apply it to modeled chemical spectra which heavily feature Fourier analysis for signal resolution.  In the case of Infrared (IR) spectroscopy, the Fourier transform is used to present a frequency spectrum characteristic to a specific chemical species.  IR makes use of the vibrational frequencies of molecular bonds, which can be thought of as springs upon which the atoms oscillate in semiclassical picture, and the vibrational modes for different bond types are excited by specific IR frequencies of radiation. 
+ As CS is frequently applied to time-frequency analysis problems, we apply it to modeled chemical spectra which heavily feature Fourier analysis for signal resolution. 
+ 
+ %(This might not be relevant now) In the case of Infrared (IR) spectroscopy, the Fourier transform is used to present a frequency spectrum characteristic to a specific chemical species.  IR makes use of the vibrational frequencies of molecular bonds, which can be thought of as springs upon which the atoms oscillate in semiclassical picture, and the vibrational modes for different bond types are excited by specific IR frequencies of radiation. 
 
 
 % SECTION II -- THEORETICAL BACKGROUND
 
-\section*{II.	Theoretical Background}	%Camille and Shichao
+\section*{II.	Theoretical Background}	%J and Camille	
 \subsection*{A.	An Introduction to Chemical Spectra}
 
-\subsubsection*{Infrared Spectroscopy}
-
-\subsubsection*{Visible Absorption Spectroscopy}
+\subsubsection*{Optical Absorption Spectroscopy}	%Camille	
 
 \subsection*{B.	Compressive Sensing}	%J
 \subsubsection*{Theory}
@@ -62,6 +62,7 @@ Abstract
 
 
 % SECTION III -- ALGORITHM IMPLEMENTATION AND DEVELOPMENT
+% J will take notes from Joe and Shichao to write this section
 
 \section*{III.	Algorithm Implementation and Development}
 
@@ -70,7 +71,7 @@ Abstract
 % SECTION 4 -- COMPUTATIONAL RESULTS	
 %Here we will examine the results of the study for each of the discrete transforms examined listed explicitly in subsubsections.  
 %Included in each subsubsection will be the results of each of the sampling rates compared. 
-\section*{IV.	Computational Results}
+\section*{IV.	Computational Results} %J and Camille using data and plots from Joe and Shichao
 
 %IDEAL CASES
 
@@ -85,7 +86,7 @@ In order to test the validity of our CS algorithm for data reconstruction, we fi
 
 % SIMULATED CASES
 
-\subsection*{B.	Simulated Infrared (IR) Spectra Cases}
+\subsection*{B.	Simulated Optical Absorption Spectra Cases}
 
 
 %\begin{figure}[H]
@@ -94,8 +95,6 @@ In order to test the validity of our CS algorithm for data reconstruction, we fi
 %\end{figure}
 %\pagebreak
 
-
-\subsection*{C.	Simulated Visible Absorption Spectra Cases}
 
 
 %\begin{figure}[H]
@@ -110,7 +109,7 @@ In order to test the validity of our CS algorithm for data reconstruction, we fi
 %We need to be sure to include our comparison of transforms and sampling rates with some sort of
 %visualization in this section.  
 
-\section*{V.	Summary and Conclusions}
+\section*{V.	Summary and Conclusions} %J with input from Joe and Shichao 
 
 
 \pagebreak
