@@ -40,24 +40,22 @@ Abstract
 
 \par Computational chemistry seeks to construct fine-grained models of chemical systems in order to model and predict experimentally observable quantities in support of experimental research.  A major implementation of computational modeling is the construction of idealized chemical spectra, which are essentially the 'fingerprints' of a chemical species in a system of interest.  Traditionally, spectra have been generated experimentally, but recently have been generated from models of molecular electronic structure which comprises a major field of study in the computational chemistry community.  However, generating predictive spectra from model and simulation can be a difficult undertaking, as the number of degrees of freedom for a so-called \emph{full configuration} solution increases exponentially (or factorially!) for each additional electron found in the system. Full configuration calculations are ideal for capturing \emph{all} of the physics of a system, but come at great computational expense as every interaction between each particle must be accounted for in the Hamiltonian and the second-order differential \emph{Schr\"odinger Equation} solved numerically.  If atomic nuclear dynamics are also modeled, this increases the complexity even further as each solution for each time step.  Consequently, approximations and calculation schemes that minimize the complexity and computational cost of a model are highly valued in the field. Accordingly, techniques for reducing or removing the necessity of small time-steps and long timescales are also of great utility, as dynamical simulations examining nuclear motion often require picosecond timescales to capture the physics of interest whereas models examining only electronic dynamics require only femtosecond timescales.\\ 
 
-\par Things are not so bleak, however, as there is an abundance of mathematical techniques for reducing the scale of such problems. This study focuses on one such technique called \emph{Compressed Sensing} (CS) that is used in data analysis to reduce the necessary sampling rate. CS does this by assuming a high degree of sparsity in a signal and makes use of the $L^{1}$ norm minimization technique to locate the vector of signal transform coefficients that is the most sparse.  
-
- As CS is frequently applied to time-frequency analysis problems, we apply it to modeled chemical spectra which heavily feature Fourier analysis for signal resolution. 
+\par Things are not so bleak, however, as there is an abundance of mathematical techniques for reducing the scale of such problems. This study focuses on one such technique called \emph{Compressed Sensing} (CS) that is used in data analysis to reduce the necessary sampling rate. CS does this by assuming a high degree of sparsity in a signal and makes use of the $L^{1}$ norm minimization technique to locate the vector of signal transform coefficients that is the most sparse.  As CS is frequently applied to time-frequency analysis problems, we apply it to modeled chemical spectra which heavily feature Fourier analysis for signal resolution.  This particular investigation focuses on \emph{Optical Absorption Spectroscopy} -- an electronic process in molecular systems where electrons are excited to higher discrete quantum states upon absorption of incident photons. \\ 
  
- %(This might not be relevant now) In the case of Infrared (IR) spectroscopy, the Fourier transform is used to present a frequency spectrum characteristic to a specific chemical species.  IR makes use of the vibrational frequencies of molecular bonds, which can be thought of as springs upon which the atoms oscillate in semiclassical picture, and the vibrational modes for different bond types are excited by specific IR frequencies of radiation. 
+\par Modeling absorption spectra computationally presents a unique challenge since the propagation of electronic states through time is the fundamental process behind the generation of experimentally observable spectra.  Several schemes exist for performing calculations that capture electron dynamics, however here we focus only on simulated spectra obtained through a \emph{Real-Time Time-Dependent Self-Consistent Field} (RT-TDSCF) scheme which solves electron dynamics by self-consistently solving a set of pseudoeigenvalue equations for each iteration in time while holding the nuclear positions fixed (using the \emph{Born-Oppenheimer approximation}).  As one can imagine, this can become prohibitively expensive for large systems with many electrons or large numbers of time steps; therefore we seek to find the best CS sampling rate to reduce the number of necessary time steps to achieve satisfactory optical absorption spectral resolution for molecular systems. \\
 
+\par This investigation divides the examination of compressed sensing into two parts.  \emph{Part One} Compares the output of the Fast Fourier Transform (FFT), Discrete Sine Transform (DST), and Discrete Cosine Transform (DCT) when applied within a CS algorithm to an idealized, known linear combination of sinusoidal functions representing our absorption signal.  \emph{Part Two} explores the application of CS utilizing the SPGL$_{1}$ $L^{1}$ norm minimization algorithm to our simulated spectra for water obtained by RT-TDSCF calculations.  All code is implemented in MATLAB (see \emph{Appendix B}.)
 
 % SECTION II -- THEORETICAL BACKGROUND
 
 \section*{II.	Theoretical Background}	%J and Camille	
-\subsection*{A.	An Introduction to Chemical Spectra}
+\subsection*{A.	An Introduction to Optical Absorption Spectroscopy} %Camille
 
-\subsubsection*{Optical Absorption Spectroscopy}	%Camille	
+\subsection*{B.	Time-Dependent Self-Consistent Field Theory} %J? 
 
-\subsection*{B.	Compressive Sensing}	%J
-\subsubsection*{Theory}
+\subsection*{C.	Compressive Sensing}	%J
 
-\subsubsection*{Application to Chemical Spectroscopy}
+\subsubsection*{D.	Applications to Chemical Spectroscopy}	%J and Camille?
 
 
 
@@ -69,8 +67,8 @@ Abstract
 
 
 % SECTION 4 -- COMPUTATIONAL RESULTS	
-%Here we will examine the results of the study for each of the discrete transforms examined listed explicitly in subsubsections.  
-%Included in each subsubsection will be the results of each of the sampling rates compared. 
+%Here we will examine the results of the study
+
 \section*{IV.	Computational Results} %J and Camille using data and plots from Joe and Shichao
 
 %IDEAL CASES
