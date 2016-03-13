@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  12 MAR 2016 20:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  12 MAR 2016 21:13
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -306,6 +306,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 43--44
 [1
 
 {/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 45--46
+
+ []
+
 [2] [3] [4] [5] (./Project Template AMATH 582.aux) ) 
 Here is how much of TeX's memory you used:
  3083 strings out of 493089
@@ -325,7 +329,7 @@ t/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2015/texmf-dist/
 fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2015/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2015/texmf-dist/font
 s/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on "Project Template AMATH 582.pdf" (5 pages, 119460 bytes).
+Output written on "Project Template AMATH 582.pdf" (5 pages, 121258 bytes).
 PDF statistics:
  56 PDF objects out of 1000 (max. 8388607)
  39 compressed objects within 1 object stream
