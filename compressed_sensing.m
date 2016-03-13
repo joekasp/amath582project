@@ -5,9 +5,10 @@
 %% Step 1: Known Signal
 clc;
 clear;
-N = 2000; %total time length
+N = 2000; %total time length (ENTIRE signal)
 t2 = linspace(0,1,N+1); t=t2(1:N);
-S = 4*sin(15*t*(2*pi))+2*sin(6*t*(2*pi))+3*cos(2*t*(2*pi)); %idealized signal
+
+S = 2*sin(10*t*(2*pi))+2*sin(7*t*(2*pi))+3*cos(2*t*(2*pi)); %idealized signal
 
 n=400; %number of points to sample
 samp = S(1:n)';
@@ -25,7 +26,7 @@ xlabel('Time')
 ylabel('Signal Amplitude')
 title('Short Sample')
 
-deltaOmega = 1; %frequency difference
+deltaOmega = t(N)-t(1); %frequency difference
 
 %generate Discrete Sine matrix
 for j = 1:n
@@ -46,14 +47,14 @@ sigma = 0.05;
 opts = spgSetParms('verbosity',0);         % Turn off the SPGL1 log output
 x = spg_bpdn(F, samp, sigma, opts);
 
-%norm(samp-F*x)
+%check if the error is small
+norm(samp-F*x)
 
+%reconstruct the signal from CS coefficients
 csSignal = zeros(size(t));
 for i = 1:N
     csSignal = csSignal + sin(deltaOmega*t*i)*x(i);
 end
-
-x = x/max(abs(x)); %normalize
 
 figure(2)
 plot(t,csSignal)
@@ -62,23 +63,29 @@ ylabel('Signal Amplitude')
 title('Compressed Sensing Signal')
 
 
+x = x/max(abs(x)); %normalize
+
 St2 = abs(fftshift(fft(S)));
-St = St2(N/2+1:N)/max(St2);
+St = St2(N/2+1:N)/max(St2); %take the last half (positive frequencies)
 
 sampt2 = abs(fftshift(fft(samp)));
 sampt = sampt2(n/2:n)/max(sampt2);
 
+%frequency domain for CS signal
 for i = 1:length(t)
     freq(i) = i/(2*pi);
 end
 
+%frequency domain for entire signal
 for i = 1:length(St)
-    freq2(i) = i;
+    freq2(i) = i-1;
 end
 
+%frequency domain for Fourier transformed sample
 for i = 1:length(sampt)
     freq3(i) = (N/n)*(i-1);
 end
+
 
 figure(3)
 hold on
