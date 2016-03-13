@@ -5,11 +5,11 @@
 %% Step 1: Known Signal
 clc;
 clear;
-N = 1000; %total time length
+N = 2000; %total time length
 t2 = linspace(0,1,N+1); t=t2(1:N);
-S = 4*sin(15*t*(2*pi))+2*sin(7*t*(2*pi))+3*sin(3*t*(2*pi)); %idealized signal
+S = 4*sin(15*t*(2*pi))+2*sin(6*t*(2*pi))+3*cos(2*t*(2*pi)); %idealized signal
 
-n=200; %number of points to sample
+n=400; %number of points to sample
 samp = S(1:n)';
 
 figure(1)
@@ -27,12 +27,19 @@ title('Short Sample')
 
 deltaOmega = 1; %frequency difference
 
-%generate Fourier matrix
+%generate Discrete Sine matrix
 for j = 1:n
     for k = 1:N
         F(j,k) = (2/pi)*deltaOmega*sin(j*t(k));
     end
 end
+
+% % generate Discrete Cosine matrix
+% for j = 1:n
+%     for k = 1:N
+%         F(j,k) = (2/pi)*deltaOmega*cos(j*t(k));
+%     end
+% end
 
 %solve the equation F*x = samp
 sigma = 0.05;
@@ -46,7 +53,7 @@ for i = 1:N
     csSignal = csSignal + sin(deltaOmega*t*i)*x(i);
 end
 
-x = x/max(x); %normalize
+x = x/max(abs(x)); %normalize
 
 figure(2)
 plot(t,csSignal)
