@@ -73,8 +73,27 @@ Abstract
 \subsubsection*{(7.)	Normalize and Plot Reconstructed Signal} 
 
 \subsection*{Part Two -- Simulated TDDFT Water Spectra}
-\subsubsection*{(1.)  }
 
+\subsubsection*{(1.)	Read in RT-TDDFT Simulated dipole files for each spatial component}
+Our RT-TDDFT simulation produces three data arrays corresponding to time-series of dipole moment orientations in each of the three spatial dimensions of the form
+$$\mathbf{p}_{w}= \begin{pmatrix} (p_{w})_{x}(t_{s})\\  (p_{w})_{y}(t_{s}) \\  (p_{w})_{z}(t_{s})\end{pmatrix}$$
+for $w = x, y, z$ and $0 \leq s \leq 50000$.
+
+\subsubsection*{(2.)	Process for FFT}
+For the traditional FFT process, we first define a damping function 
+$$f(\tau) = e^{-(t - t_{0}) / \tau}$$
+where $\tau$ is a our damping constant, and we damp the time series by applying $f(\tau)$ in the following way
+$$p_{i}^{damped} = p_{i} \times f(\tau).$$
+At this point, setting $\tau$ = 150 for a 50000 time-step simulation, the function is damped such that only the first 500 or so time iterations are relevant, and the remainder may be truncated.  Applying the Fourier Transform to the damped dipole time series 
+$$\alpha_{ij}(\omega) = \frac{1}{\kappa_{i}}\int_{0}^{\infty}  e^{i\omega t} [p_{j}(t) - p_{j}(t_{0})] dt$$ 
+
+yields the polarizability tensor $\mathbf{\alpha}$ such that each component $\alpha_{ij}$ (for $i,j = x,y,z$) allows us to calculate the photon absorption cross-section for the molecule given by the equation
+$$\sigma(\omega) = \frac{4 \pi \omega}{3c}  \Im\sum_{i = x, y, z} \alpha_{ii}(\omega)$$
+where we see the absorption cross section is simply the imaginary part of the trace of the polarizability tensor.  The frequency spectrum is plotted for $\sigma$ as a function of frequency $\omega$.
+
+\subsubsection*{(3.)	Process for CS}
+
+In contrast, the Compressive Sensing algorithm uses a different process that does not require damping.  The dipole moments and polarizability tensor are constructed similarly to the FFT scheme
 
 
 % SECTION 4 -- COMPUTATIONAL RESULTS	
