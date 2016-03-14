@@ -51,6 +51,14 @@ Abstract
 \section*{II.	Theoretical Background}	%J and Camille	
 \subsection*{A.	An Introduction to Optical Absorption Spectroscopy} %Camille
 
+Spectroscopy is a useful and highly utilized technique throughout the field of chemistry that investigates how a molecule or material interacts with electromagnetic radiation. One commonly used form of this general technique is that of optical absorption spectroscopy, wherein light is used as a probe of the properties and functionalities of compounds. In UV-visible spectroscopy (UV-vis), for example, a sample is exposed to light in the ultraviolet and visible range of wavelength. When a particular wavelength corresponds with the energy gap between energy levels of the molecule, electrons can be excited into higher energy molecular orbitals. A typical spectrum in this technique will plot absorbance as a function of wavelength, where absorbance is given by:
+
+\begin{align*}
+A = \log_{10}{(I_0/I)}
+\end{align*}
+
+where I$_0$ is the intensity of the incident light and I is the intensity of the light after passing through a sample. Thus, for a range of wavelengths, spectra will show peaks at wavelengths which correspond to light being absorbed to excite an electron to a different energetic state. One can see how modeled data of such a spectrum lends itself well to the compressive sensing technique. Although this will be further discussion in section C, have absorbance features for only a few wavelengths will translate to there being sparsity in any matrix representing absorption spectroscopy data. 
+
 \subsection*{B.	Time-Dependent Density Functional Theory (TDDFT)} %J? 
 
 \subsection*{C.	Compressive Sensing}	%J
@@ -93,7 +101,7 @@ where we see the absorption cross section is simply the imaginary part of the tr
 
 \subsubsection*{(3.)	Process for CS}
 
-In contrast, the Compressive Sensing algorithm uses a different process that does not require damping.  The dipole moments and polarizability tensor are constructed similarly to the FFT scheme
+In contrast, the Compressive Sensing algorithm uses a different process that does not require damping.  The dipole moments and polarizability tensor are constructed similarly to the FFT scheme, but 
 
 
 % SECTION 4 -- COMPUTATIONAL RESULTS	
