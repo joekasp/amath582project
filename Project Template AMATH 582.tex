@@ -53,13 +53,13 @@ Abstract
 
 Spectroscopy is a useful and highly utilized technique throughout the field of chemistry that investigates how a molecule or material interacts with electromagnetic radiation. One commonly used form of this general technique is that of optical absorption spectroscopy, wherein light is used as a probe of the properties and functionalities of compounds. In UV-visible spectroscopy (UV-vis), for example, a sample is exposed to light in the ultraviolet and visible range of wavelength. When a particular wavelength corresponds with the energy gap between energy levels of the molecule, electrons can be excited into higher energy molecular orbitals. A typical spectrum in this technique will plot absorbance as a function of wavelength, where absorbance is given by:
 
-\begin{align*}
+\begin{align}
 A = \log_{10}{(I_0/I)}
-\end{align*}
+\end{align}
 
 where I$_0$ is the intensity of the incident light and I is the intensity of the light after passing through a sample. Thus, for a range of wavelengths, spectra will show peaks at wavelengths which correspond to light being absorbed to excite an electron to a different energetic state. One can see how modeled data of such a spectrum lends itself well to the compressive sensing technique. Although this will be further discussion in section C, have absorbance features for only a few wavelengths will translate to there being sparsity in any matrix representing absorption spectroscopy data. 
 
-\subsection*{B.	Time-Dependent Density Functional Theory (TDDFT)} %J? 
+\subsection*{B.	Real-Time Time-Dependent Density Functional Theory (RT-TDDFT)} 
 
 \subsection*{C.	Compressive Sensing}	%J
 
@@ -96,32 +96,46 @@ where $\eta$ is a threshold level.
 In the case of chemical spectroscopy, the quantized nature of energy leads to a finite set of allowed frequencies.
 
 % SECTION III -- ALGORITHM IMPLEMENTATION AND DEVELOPMENT
-% J will take notes from Joe and Shichao to write this section
 
 \section*{III.	Algorithm Implementation and Development}
 \subsection*{Part One -- Known Ideal Signal}
-\subsubsection*{(1.)	Create idealized signal}
-\subsubsection*{(2.)	Choose sampling rate}
-\subsubsection*{(3.)	Generate Discrete Sine Transformation (DST) matrix} 
-\subsubsection*{(4.)	Solve the norm minimization equation with Basis Pursuit Denoising (BPDN)}
-\subsubsection*{(5.)	Check that error is small}
-\subsubsection*{(6.)	Perform signal reconstruction from CS coefficients $\mathbf{c}$}
-\subsubsection*{(7.)	Normalize and Plot Reconstructed Signal} 
+In order to prepare the idealized system to examine the properties of the CS algorithm, a known ideal signal over time $S(t)$ is created using the following functional form:
+\begin{equation}
+	S(t) = 2\sin{10t(2\pi)}+2\sin{7t(2\pi)} + 3\cos{2t(2\pi)}.
+\end{equation}
+\par Subsequently, the sampling rate (e.g. the size of the subset of iterations) is selected for the CS algorithm. A time series array is constructed by projecting the signal $S(t)$ onto the time domain $t$, and it is plotted as a reference.  The frequency difference $\Delta\omega$ is defined, and the Discrete Sine Transform matrix is constructed using equation (DST Eqn ??) above.  
+
+\par Next, the Fourier matrix $\mathbf{F}$ is constructed and the BPDN procedure is applied using the SPGL1 algorithm to optimize the array $\mathbf{g}$ subject to the constraint given in Equation (??). To test for the minimization of the $L^{1}$ norm of $\mathbf{h}$ we evaluate Equation (?? constraint with $\eta$) until the $L^{1}$ norm is less than the threshold value $\eta$, at which point the signal is reconstructed in the time domain following Equation (2).  The reconstructed signal is finally transformed into the frequency ($\omega$) domain and plotted as a simulated optical absorbance spectrum. In this part of the implementation of CS, we compare it with FFT of the entire time series signal (our benchmark) and also with an FFT of an undersampled subset of the original time series.  
 
 \subsection*{Part Two -- Simulated TDDFT Water Spectra}
 
 \subsubsection*{(1.)	Read in RT-TDDFT Simulated dipole files for each spatial component}
 Our RT-TDDFT simulation produces three data arrays corresponding to time-series of dipole moment orientations in each of the three spatial dimensions of the form
-$$\mathbf{p}_{w}= \begin{pmatrix} (p_{w})_{x}(t_{s})\\  (p_{w})_{y}(t_{s}) \\  (p_{w})_{z}(t_{s})\end{pmatrix}$$
+
+\begin{equation}
+	\mathbf{p}_{w}= \begin{pmatrix} (p_{w})_{x}(t_{s})\\  (p_{w})_{y}(t_{s}) \\  (p_{w})_{z}(t_{s})\end{pmatrix}
+\end{equation}
+
 for $w = x, y, z$ and $0 \leq s \leq 50000$.
 
 \subsubsection*{(2.)	Process for FFT}
+
 For the traditional FFT process, we first define a damping function 
-$$f(\tau) = e^{-(t - t_{0}) / \tau}$$
+
+\begin{equation}
+	f(\tau) = e^{-(t - t_{0}) / \tau}
+\end{equation}
+
 where $\tau$ is a our damping constant, and we damp the time series by applying $f(\tau)$ in the following way
-$$p_{i}^{damped} = p_{i} \times f(\tau).$$
+
+\begin{equation}
+	p_{i}^{damped} = p_{i} \times f(\tau).
+\end{equation}
+
 At this point, setting $\tau$ = 150 for a 50000 time-step simulation, the function is damped such that only the first 500 or so time iterations are relevant, and the remainder may be truncated.  Applying the Fourier Transform to the damped dipole time series 
-$$\alpha_{ij}(\omega) = \frac{1}{\kappa_{i}}\int_{0}^{\infty}  e^{i\omega t} [p_{j}(t) - p_{j}(t_{0})] dt$$ 
+\begin{equation}
+	\alpha_{ij}(\omega) = \frac{1}{\kappa_{i}}\int_{0}^{\infty}  e^{i\omega t} [p_{j}(t) - p_{j}(t_{0})] dt
+\end{equation}
 
 yields the polarizability tensor $\mathbf{\alpha}$ such that each component $\alpha_{ij}$ (for $i,j = x,y,z$) allows us to calculate the photon absorption cross-section for the molecule given by the equation
 $$\sigma(\omega) = \frac{4 \pi \omega}{3c}  \Im\sum_{i = x, y, z} \alpha_{ii}(\omega)$$
@@ -129,14 +143,21 @@ where we see the absorption cross section is simply the imaginary part of the tr
 
 \subsubsection*{(3.)	Process for CS}
 
-In contrast, the Compressive Sensing algorithm uses a different process that does not require damping.  The dipole moments and polarizability tensor are constructed similarly to the FFT scheme, but after this step the processes are wildly different. Here, we calculate $p_{j}(t) - p_{j}(t_{0})$ and build the $\mathbf{F}$ matrix as a Discrete Sine Transform (DST) matrix of size $N \times N$, and matrix $\mathbf{f}$ of size $M \times N$  for a subset of size $m <<< n$ of the dipole time series (of size $N \times N$).  The $L^{1}$ norm optimization of the coefficient vector $\mathbf{a}$ in 
-$$\mathbf{f}\mathbf{a} = \mathbf{p}$$
+In contrast, the Compressive Sensing algorithm uses a different process that does not require damping.  The dipole moments and polarizability tensor are constructed similarly to the FFT scheme, but after this step the processes are wildly different. Here, we calculate $h_{j}(t) - h_{j}(t_{0})$ and build the $\mathbf{F}$ matrix as a Discrete Sine Transform (DST) matrix of size $N \times N$, and matrix $\mathbf{f}$ of size $M \times N$  for a subset of size $m <<< n$ of the dipole time series (of size $N \times N$).  The $L^{1}$ norm optimization of the coefficient vector $\mathbf{g}$ in 
+\begin{equation}
+	\mathbf{F}\mathbf{g} = \mathbf{h}
+\end{equation}
+
 is obtained by applying the SPGL1 algorithm in MATLAB to perform the optimization using the Basis Pursuit (BP) method where\\
 \begin{center}
 $min |\mathbf{a}|_{1}$ subject to $|\mathbf{f}\mathbf{a} - \mathbf{p}| < \eta$\\
 \end{center}
 and where $\eta$ is a threshold value. This technique is applied to all three spatial components $\mathbf{a}_{w}$ (where $w = x,y,z$) of the polarizability tensor to obtain the sparsest possible $\mathbf{a}$ coefficient array.  Subsequently, the absorption cross section $\sigma(\omega)$ is calculated from an equation similar to that used for calculating the same quantity in the FFT algorithm:
-$$\sigma(\omega) = \frac{4\pi\omega}{3c}\sum_{w = x,y,z}\mathbf{a}_{w}(\omega).$$
+
+\begin{equation}
+	\sigma(\omega) = \frac{4\pi\omega}{3c}\sum_{w = x,y,z}\mathbf{a}_{w}(\omega).
+\end{equation}
+
 The spectrum is plotted as $\sigma(\omega)$ with respect to $\omega$.
 
 % SECTION 4 -- COMPUTATIONAL RESULTS	
@@ -203,9 +224,7 @@ In order to test the validity of our CS algorithm for data reconstruction, we fi
 % MATLAB CODE SECTION ------------------------------------------------------------------------------
 \section{MATLAB Code}
 First, we have the script \emph{compressed\_sensing} which manipulates the idealized case from \emph{Part One}:\\
-
 \begin{verbatim}
-%Insert Matlab Code Here.  Whitespace is retained within {Verbatim}
 %Compressed Sensing
 %AMATH 582 Final Project
 %J. Kasper, C. Houferak, J. Radler, S. Sun
