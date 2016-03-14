@@ -63,9 +63,37 @@ where I$_0$ is the intensity of the incident light and I is the intensity of the
 
 \subsection*{C.	Compressive Sensing}	%J
 
+\par Traditional methods of time-frequency analysis such as the Fourier transform require that one gathers enough data to exceed the Nyquist rate. However, in the spirit of other dimensional reduction algorithms, there are many signals of interest that are sparse. That is there exists a ``best" simple representation. In particular, we posit \textit{a priori} that only a small number of Fourier coefficients are nonzero. If this is the case, then the task of finding the Fourier coefficients can be greatly simplified. \\
+
+\par Consider a signal $h(t)$ that is sampled $n$ times with a spacing $\Delta t$. Then we may write the signal observations as a vector $\vec{h}$ with $n$ components $h_{j}$ corresponding to the times $t_{j}$. The set of Fourier coefficients that we wish to find for a set of frequencies $\omega_{k}$ are given by $g_{k}$ where $k \in \{1,...,N\}$ and $\Delta \omega$ is constant. In general the $g_{k}$ can be calculated by the discrete sine transform (or any other Fourier transform):
+
+\begin{equation}
+    g_{k} = \sum_{j=1}^{n} \Delta t \sin(\omega_{k}t_{j})h_{j}
+\end{equation}
+
+Casting this in matrix form, a Fourier matrix $F$ is given by
+\begin{equation}
+    F_{jk} = \frac{2}{\pi}\Delta \omega \sin(\omega_{j}t_{k})
+\end{equation}
+
+so that the problem we wish to solve is simply
+
+\begin{equation}\label{eq:Fgh}
+    F \mathbf{g} = \mathbf{h}
+\end{equation}
+
+In the case that we assume $N > n$, this system is underdetermined and will in general have multiple solutions. Yet since we know that we are looking for a sparse solution the task is to find the solution to equation~(\ref{eq:Fgh}) that has the most coefficients $g_{k}$ that are zero. This can be done algorithmically by minimizing the $L^{1}$ norm of $\mathbf{g}$, subject to the constraint of equation~(\ref{eq:Fgh}) of course. \\
+
+\par In order to allow for some level of noise in the signal the constraint can be loosened. This procedure, called basis pursuit denoising (BPDN), is given by
+
+\begin{equation}
+    \min_{g} |\mathbf{g}|_{1} \text{ \,subject to \,} |F \mathbf{g} - \mathbf{h}| < \eta
+\end{equation}
+
+where $\eta$ is a threshold level.
 \subsubsection*{D.	Applications to Chemical Spectroscopy}	%J and Camille?
 
-
+In the case of chemical spectroscopy, the quantized nature of energy leads to a finite set of allowed frequencies.
 
 % SECTION III -- ALGORITHM IMPLEMENTATION AND DEVELOPMENT
 % J will take notes from Joe and Shichao to write this section
