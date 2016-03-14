@@ -101,7 +101,10 @@ where we see the absorption cross section is simply the imaginary part of the tr
 
 \subsubsection*{(3.)	Process for CS}
 
-In contrast, the Compressive Sensing algorithm uses a different process that does not require damping.  The dipole moments and polarizability tensor are constructed similarly to the FFT scheme, but 
+In contrast, the Compressive Sensing algorithm uses a different process that does not require damping.  The dipole moments and polarizability tensor are constructed similarly to the FFT scheme, but after this step the processes are wildly different. Here, we calculate $p_{j}(t) - p_{j}(t_{0})$ and build the $mathbf{F}$ matrix as a Discrete Sine Transform (DST) matrix of size $N \times N$, and matrix $\mathbf{f}$ of size $M \times N$  for a subset of size $m$ <<< $n$ of the dipole time series (of size $N \times N$).  The $L^{1}$ norm optimization of the coefficient vector $\mathbf{c}$ in 
+$$\mathbf{f}\mathbf{c} = \mathbf{b}$$
+where we apply the SPGL1 algorithm in MATLAB to perform the optimization within the Basis Set Pursuit Denoise (BPDN) scheme where 
+$$ min |c|_{1} subject to |\mathbf{f}\mathbf{c} - \mathbf{b}| < \eta$$
 
 
 % SECTION 4 -- COMPUTATIONAL RESULTS	
