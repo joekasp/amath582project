@@ -101,11 +101,15 @@ where we see the absorption cross section is simply the imaginary part of the tr
 
 \subsubsection*{(3.)	Process for CS}
 
-In contrast, the Compressive Sensing algorithm uses a different process that does not require damping.  The dipole moments and polarizability tensor are constructed similarly to the FFT scheme, but after this step the processes are wildly different. Here, we calculate $p_{j}(t) - p_{j}(t_{0})$ and build the $mathbf{F}$ matrix as a Discrete Sine Transform (DST) matrix of size $N \times N$, and matrix $\mathbf{f}$ of size $M \times N$  for a subset of size $m$ <<< $n$ of the dipole time series (of size $N \times N$).  The $L^{1}$ norm optimization of the coefficient vector $\mathbf{c}$ in 
-$$\mathbf{f}\mathbf{c} = \mathbf{b}$$
-where we apply the SPGL1 algorithm in MATLAB to perform the optimization within the Basis Set Pursuit Denoise (BPDN) scheme where 
-$$ min |c|_{1} subject to |\mathbf{f}\mathbf{c} - \mathbf{b}| < \eta$$
-
+In contrast, the Compressive Sensing algorithm uses a different process that does not require damping.  The dipole moments and polarizability tensor are constructed similarly to the FFT scheme, but after this step the processes are wildly different. Here, we calculate $p_{j}(t) - p_{j}(t_{0})$ and build the $\mathbf{F}$ matrix as a Discrete Sine Transform (DST) matrix of size $N \times N$, and matrix $\mathbf{f}$ of size $M \times N$  for a subset of size $m <<< n$ of the dipole time series (of size $N \times N$).  The $L^{1}$ norm optimization of the coefficient vector $\mathbf{a}$ in 
+$$\mathbf{f}\mathbf{a} = \mathbf{p}$$
+is obtained by applying the SPGL1 algorithm in MATLAB to perform the optimization using the Basis Pursuit (BP) method where\\
+\begin{center}
+$min |\mathbf{a}|_{1}$ subject to $|\mathbf{f}\mathbf{a} - \mathbf{p}| < \eta$\\
+\end{center}
+and where $\eta$ is a threshold value. This technique is applied to all three spatial components $\mathbf{a}_{w}$ (where $w = x,y,z$) of the polarizability tensor to obtain the sparsest possible $\mathbf{a}$ coefficient array.  Subsequently, the absorption cross section $\sigma(\omega)$ is calculated from an equation similar to that used for calculating the same quantity in the FFT algorithm:
+$$\sigma(\omega) = \frac{4\pi\omega}{3c}\sum_{w = x,y,z}\mathbf{a}_{w}(\omega).$$
+The spectrum is plotted as $\sigma(\omega)$ with respect to $\omega$.
 
 % SECTION 4 -- COMPUTATIONAL RESULTS	
 %Here we will examine the results of the study
