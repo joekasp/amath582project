@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  16 MAR 2016 23:07
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  17 MAR 2016 10:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -321,70 +321,70 @@ Underfull \hbox (badness 10000) in paragraph at lines 66--67
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 88--89
+Underfull \hbox (badness 10000) in paragraph at lines 91--92
 
  []
 
 [4]
-Underfull \hbox (badness 10000) in paragraph at lines 107--108
+Underfull \hbox (badness 10000) in paragraph at lines 110--111
 
  []
 
 [5] [6]
-Underfull \hbox (badness 10000) in paragraph at lines 175--176
+Underfull \hbox (badness 10000) in paragraph at lines 180--181
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 221--222
+Underfull \hbox (badness 10000) in paragraph at lines 226--227
 
  []
 
 [7]
-Underfull \hbox (badness 10000) in paragraph at lines 223--224
+Underfull \hbox (badness 10000) in paragraph at lines 228--229
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 225--226
+Underfull \hbox (badness 10000) in paragraph at lines 230--231
 
  []
 
 [8] [9]
-Underfull \hbox (badness 10000) in paragraph at lines 247--248
+Underfull \hbox (badness 10000) in paragraph at lines 250--251
 
  []
 
 
-Overfull \hbox (12.64433pt too wide) in paragraph at lines 356--356
+Overfull \hbox (12.64433pt too wide) in paragraph at lines 359--359
 []\OT1/cmtt/m/n/10.95 S = 2*sin(10*t*(2*pi))+2*sin(7*t*(2*pi))+3*cos(2*t*(2*pi)
 ); %idealized signal[] 
  []
 
 [10] [11] [12]
-Overfull \hbox (1.14696pt too wide) in paragraph at lines 427--427
+Overfull \hbox (1.14696pt too wide) in paragraph at lines 430--430
 []\OT1/cmtt/m/n/10.95 m=fix(nn/5);          %number of used data points  (short
  edge of F matrix)[] 
  []
 
 
-Overfull \hbox (41.38777pt too wide) in paragraph at lines 427--427
+Overfull \hbox (41.38777pt too wide) in paragraph at lines 430--430
 []\OT1/cmtt/m/n/10.95 T=t(nn);           %simulated simulation time. actual sim
 ulation time will be T/5.[] 
  []
 
 [13]
-Overfull \hbox (116.12071pt too wide) in paragraph at lines 427--427
+Overfull \hbox (116.12071pt too wide) in paragraph at lines 430--430
 []\OT1/cmtt/m/n/10.95 number=find(w<40);                         % confine the 
 w to the frequency interval of we want[] 
  []
 
 [14] (./Project Template AMATH 582.aux) ) 
 Here is how much of TeX's memory you used:
- 3089 strings out of 493089
- 42000 string characters out of 6134842
- 111153 words of memory out of 5000000
- 6524 multiletter control sequences out of 15000+600000
+ 3102 strings out of 493089
+ 42122 string characters out of 6134842
+ 111262 words of memory out of 5000000
+ 6537 multiletter control sequences out of 15000+600000
  12795 words of font info for 48 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  42i,16n,26p,1849b,290s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -403,7 +403,7 @@ msfonts/cm/cmsy10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/am
 sfonts/cm/cmsy8.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmti10.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfo
 nts/cm/cmtt10.pfb>
-Output written on "Project Template AMATH 582.pdf" (14 pages, 207631 bytes).
+Output written on "Project Template AMATH 582.pdf" (14 pages, 207411 bytes).
 PDF statistics:
  106 PDF objects out of 1000 (max. 8388607)
  75 compressed objects within 1 object stream

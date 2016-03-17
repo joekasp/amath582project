@@ -53,7 +53,7 @@ Abstract
 
 \par Spectroscopy is a useful and highly utilized technique throughout the field of chemistry that investigates how a molecule or material interacts with electromagnetic radiation. One commonly used form of this general technique is that of optical absorption spectroscopy, wherein light is used as a probe of the properties and functionalities of compounds. In UV-visible spectroscopy (UV-vis), for example, a sample is exposed to light in the ultraviolet and visible range of wavelength. When a particular wavelength corresponds with the energy gap between energy levels of the molecule, electrons can be excited into higher energy molecular orbitals. A typical spectrum in this technique will plot absorbance as a function of wavelength, where absorbance is given by:
 
-\begin{align}
+\begin{align}\label{eq:abs}
 A = \log_{10}{(I_0/I)}
 \end{align}
 
@@ -66,18 +66,21 @@ where I$_0$ is the intensity of the incident light and I is the intensity of the
 \par Density Functional Theory is based on a theorem called the Hohenberg-Kohn theorem, the first part of which shows that for all electron density functions there exists a unique energy functional corresponding to each density state.  The wavefunctions (or orbitals) come into play when we consider the density of electrons around the nucleus to be a function of the electronic \emph{wavefunction}.  We use idealized, variationally optimized electron wavefunctions called \emph{Kohn-Sham orbitals} to calculate the density from which the energy functional is calculated. However, the exact form of the unique energy functional is unknown in the general case, so quantities that contribute to the overall energy such as electronic exchange (the energy necessary to exchange the positions of two electrons of antiparallel spins) and the electron correlation energies must be corrected to obtain an accurate calculation.  In most DFT methodologies, the first principles (\emph{ab initio}) energy functional is corrected at each point in space by an \emph{Exchange Correlation functional} which is typically a semiempirical correction which accounts for artifacts in the kinetic and electronic exchange terms.\\
 
 \par Time-Dependent Density Functional Theory (TDDFT) then takes the system of interest and calculates the energy functional for each individual time step, then propagates it in time by applying a unitary operator to the density matrix (which describes the electron density for the entire system) with the end goal of resolving electronic dynamics for the system over a given simulation time.  What \emph{Real-Time} TDDFT does is propagate the density matrix according to the TDDFT equation
-\begin{equation}
+\begin{equation}\label{eq:tddft}
 	i\frac{d\mathbf{P}(t)}{dt} = [\mathbf{K}(t), \mathbf{P}(t)]
 \end{equation}
 where the right side of the equation is a commutator, $\mathbf{K}(t)$ is the Kohn-Sham matrix, and $\mathbf{P}(t)$ is the density matrix.  Matrix $\mathbf{K}(t)$ is obtained by projecting the previously mentioned Kohn-Sham orbital wavefunctions (eigenstates) onto a space spanned by a set of supporting functions. Subsequently, the electron dynamics are simulated in real-time by propagating the \emph{density matrix} using a unitary time-evolution operator $\mathbf{U}(t_{n})$ expressed in the same eigenbasis as the Kohn-Sham matrix operator at time $t$.  The time evolution can be expressed as, for 
-\begin{equation}
+
+\begin{equation}\label{eq:prop}
 \begin{split}
 	\mathbf{U}(t_{n}) = exp[-i \cdot\Delta t \cdot \mathbf{K}(t_{n})]\\
 	=\mathbf{C}(t_{n})\cdot[-i\cdot\Delta t \cdot \epsilon (t_{n})]\cdot \mathbf{C}^{\dag}(t_{n})
 \end{split}
 \end{equation}
+
 where
-\begin{equation}
+
+\begin{equation}\label{eq:evol}
 	\mathbf{P}(t_{n+1}) = \mathbf{U}(t_{n})\cdot\mathbf{P}(t_{n-1})\cdot\mathbf{U}^{\dag}(t_{n}).
 \end{equation}
 
@@ -89,12 +92,12 @@ where
 
 \par Consider a signal $h(t)$ that is sampled $n$ times with a spacing $\Delta t$. Then we may write the signal observations as a vector $\vec{h}$ with $n$ components $h_{j}$ corresponding to the times $t_{j}$. The set of Fourier coefficients that we wish to find for a set of frequencies $\omega_{k}$ are given by $g_{k}$ where $k \in \{1,...,N\}$ and $\Delta \omega$ is constant. In general the $g_{k}$ can be calculated by the discrete sine transform (or any other Fourier transform):
 
-\begin{equation}
+\begin{equation}\label{eq:dst}
     g_{k} = \sum_{j=1}^{n} \Delta t \sin(\omega_{k}t_{j})h_{j}
 \end{equation}
 
 Casting this in matrix form, a Fourier matrix $F$ is given by
-\begin{equation}
+\begin{equation}\label{eq:idst}
     F_{jk} = \frac{2}{\pi}\Delta \omega \sin(\omega_{j}t_{k})
 \end{equation}
 
@@ -104,37 +107,39 @@ so that the problem we wish to solve is simply
     F \mathbf{g} = \mathbf{h}
 \end{equation}
 
-In the case that we assume $N > n$, this system is underdetermined and will in general have multiple solutions. Yet since we know that we are looking for a sparse solution the task is to find the solution to equation~(\ref{eq:Fgh}) that has the most coefficients $g_{k}$ that are zero. This can be done algorithmically by minimizing the $L^{1}$ norm of $\mathbf{g}$, subject to the constraint of equation~(\ref{eq:Fgh}) of course. \\
+In the case that we assume $N > n$, this system is underdetermined and will in general have multiple solutions. Yet since we know that we are looking for a sparse solution the task is to find the solution to equation~(\ref{eq:Fgh}) that has the most coefficients $g_{k}$ that are zero. This can be done algorithmically by minimizing the $L^{1}$ norm of $\mathbf{g}$, subject to the constraint of equation (\ref{eq:Fgh}) of course. \\
 
 \par In order to allow for some level of noise in the signal the constraint can be loosened. This procedure, called basis pursuit denoising (BPDN), is given by
 
-\begin{equation}
+\begin{equation}\label{eq:bpdn}
     \min_{g} |\mathbf{g}|_{1} \text{ \,subject to \,} |F \mathbf{g} - \mathbf{h}| < \eta
 \end{equation}
 
 where $\eta$ is a threshold level.
 \subsubsection*{D.	Applications to Chemical Spectroscopy}	%J and Camille?
 
-In the case of chemical spectroscopy, the quantized nature of energy leads to a finite set of allowed frequencies.
+\par In the case of chemical spectroscopy, the quantized nature of energy leads to a finite set of allowed frequencies absorbed during an electronic excitation process. 
 
 % SECTION III -- ALGORITHM IMPLEMENTATION AND DEVELOPMENT
 
 \section*{III.	Algorithm Implementation and Development}
 \subsection*{Part One -- Known Ideal Signal}
 In order to prepare the idealized system to examine the properties of the CS algorithm, a known ideal signal over time $S(t)$ is created using the following functional form:
-\begin{equation}
+
+\begin{equation}\label{eq:ideal}
 	S(t) = 2\sin{10t(2\pi)}+2\sin{7t(2\pi)} + 3\cos{2t(2\pi)}.
 \end{equation}
-\par Subsequently, the sampling rate (e.g. the size of the subset of iterations) is selected for the CS algorithm. A time series array is constructed by projecting the signal $S(t)$ onto the time domain $t$, and it is plotted as a reference.  The frequency difference $\Delta\omega$ is defined, and the Discrete Sine Transform matrix is constructed using equation (DST Eqn ??) above.  
 
-\par Next, the Fourier matrix $\mathbf{F}$ is constructed and the BPDN procedure is applied using the SPGL1 algorithm to optimize the array $\mathbf{g}$ subject to the constraint given in Equation (??). To test for the minimization of the $L^{1}$ norm of $\mathbf{h}$ we evaluate Equation (?? constraint with $\eta$) until the $L^{1}$ norm is less than the threshold value $\eta$, at which point the signal is reconstructed in the time domain following Equation (2).  The reconstructed signal is finally transformed into the frequency ($\omega$) domain and plotted as a simulated optical absorbance spectrum. In this part of the implementation of CS, we compare it with FFT of the entire time series signal (our benchmark) and also with an FFT of an undersampled subset of the original time series.  
+\par Subsequently, the sampling rate (e.g. the size of the subset of iterations) is selected for the CS algorithm. A time series array is constructed by projecting the signal $S(t)$ onto the time domain $t$, and it is plotted as a reference.  The frequency difference $\Delta\omega$ is defined, and the Discrete Sine Transform matrix is constructed using equation (\ref{eq:dst}) above.  
+
+\par Next, the Fourier matrix $\mathbf{F}$ is constructed and the BPDN procedure is applied using the SPGL1 algorithm to optimize the array $\mathbf{g}$ subject to the constraint given in equation (\ref{eq:bpdn}). To test for the minimization of the $L^{1}$ norm of $\mathbf{h}$ we evaluate equation (\ref{eq:bpdn}) until the $L^{1}$ norm is less than the threshold value $\eta$, at which point the signal is reconstructed in the time domain following equation (\ref{eq:idst}).  The reconstructed signal is finally transformed into the frequency ($\omega$) domain and plotted as a simulated optical absorbance spectrum. In this part of the implementation of CS, we compare it with FFT of the entire time series signal (our benchmark) and also with an FFT of an undersampled subset of the original time series.  
 
 \subsection*{Part Two -- Simulated TDDFT Water Spectra}
 
 \subsubsection*{(1.)	Read in RT-TDDFT Simulated dipole files for each spatial component}
 Our RT-TDDFT simulation produces three data arrays corresponding to time-series of dipole moment orientations in each of the three spatial dimensions of the form
 
-\begin{equation}
+\begin{equation}\label{eq:dipoles}
 	\mathbf{p}_{w}= \begin{pmatrix} (p_{w})_{x}(t_{s})\\  (p_{w})_{y}(t_{s}) \\  (p_{w})_{z}(t_{s})\end{pmatrix}
 \end{equation}
 
@@ -144,28 +149,28 @@ for $w = x, y, z$ and $0 \leq s \leq 50000$.
 
 For the traditional FFT process, we first define a damping function 
 
-\begin{equation}
+\begin{equation}\label{eq:damp}
 	f(\tau) = e^{-(t - t_{0}) / \tau}
 \end{equation}
 
 where $\tau$ is a our damping constant, and we damp the time series by applying $f(\tau)$ in the following way
 
-\begin{equation}
+\begin{equation}\label{eq:serdamp}
 	p_{i}^{damped} = p_{i} \times f(\tau).
 \end{equation}
 
 At this point, setting $\tau$ = 150 for a 50000 time-step simulation, the function is damped such that only the first 500 or so time iterations are relevant, and the remainder may be truncated.  Applying the Fourier Transform to the damped dipole time series 
-\begin{equation}
+\begin{equation}\label{eq:pol}
 	\alpha_{ij}(\omega) = \frac{1}{\kappa_{i}}\int_{0}^{\infty}  e^{i\omega t} [p_{j}(t) - p_{j}(t_{0})] dt
 \end{equation}
 
 yields the polarizability tensor $\mathbf{\alpha}$ such that each component $\alpha_{ij}$ (for $i,j = x,y,z$) allows us to calculate the photon absorption cross-section for the molecule given by the equation
-\begin{equation}
+\begin{equation}\label{eq:csec}
 	\sigma(\omega) = \frac{4 \pi \omega}{3c}  \Im\sum_{i = x, y, z} \alpha_{ii}(\omega)
 \end{equation}
 where we see the absorption cross section is simply the imaginary part of the trace of the polarizability tensor.  The frequency spectrum is plotted for $\sigma$ as a function of frequency $\omega$.
 
-\subsubsection*{(3.)	Process for CS}
+\subsubsection*{(3.)	Process for CS}	%This needs to be edited to reflect Joe's notation in the intro!!! 
 
 In contrast, the Compressive Sensing algorithm uses a different process that does not require damping.  The dipole moments and polarizability tensor are constructed similarly to the FFT scheme, but after this step the processes are wildly different. Here, we calculate $h_{j}(t) - h_{j}(t_{0})$ and build the $\mathbf{F}$ matrix as a Discrete Sine Transform (DST) matrix of size $N \times N$, and matrix $\mathbf{f}$ of size $M \times N$  for a subset of size $m <<< n$ of the dipole time series (of size $N \times N$).  The $L^{1}$ norm optimization of the coefficient vector $\mathbf{g}$ in 
 \begin{equation}
@@ -228,9 +233,7 @@ Finally, since we were able to demonstrate a useful signal reconstruction using 
 \pagebreak
 %REFERENCES----------------------------------------------------------------------------------------------
 \section*{References}
-[1]
 
-[2]
 
 
 \pagebreak
