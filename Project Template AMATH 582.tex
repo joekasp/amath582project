@@ -38,7 +38,7 @@ Abstract
 %\caption{Corrupted Image of Derek's Trademark Look}
 %\end{wrapfigure}
 
-\par Computational chemistry seeks to construct fine-grained models of chemical systems in order to model and predict experimentally observable quantities in support of experimental research.  A major implementation of computational modeling is the construction of idealized chemical spectra, which are essentially the 'fingerprints' of a chemical species in a system of interest.  Traditionally, spectra have been generated experimentally, but recently have been generated from models of molecular electronic structure which comprises a major field of study in the computational chemistry community.  However, generating predictive spectra from model and simulation can be a difficult undertaking, as the number of degrees of freedom for a so-called \emph{full configuration} solution increases exponentially (or factorially!) for each additional electron found in the system. Full configuration calculations are ideal for capturing \emph{all} of the physics of a system, but come at great computational expense as every interaction between each particle must be accounted for in the Hamiltonian and the second-order differential \emph{Schr\"odinger Equation} solved numerically.  If atomic nuclear dynamics are also modeled, this increases the complexity even further as each solution for each time step.  Consequently, approximations and calculation schemes that minimize the complexity and computational cost of a model are highly valued in the field. Accordingly, techniques for reducing or removing the necessity of small time-steps and long timescales are also of great utility, as dynamical simulations examining nuclear motion often require picosecond timescales to capture the physics of interest whereas models examining only electronic dynamics require only femtosecond timescales.\\ 
+\par Computational chemistry seeks to construct fine-grained models of chemical systems in order to model and predict experimentally observable quantities in support of experimental research.  A major implementation of computational modeling is the construction of idealized chemical spectra, which are essentially the `fingerprints' of a chemical species in a system of interest.  Although spectra are generated experimentally, they are often complex and difficult to understand, leading to the desire to have a ``benchmark" which which to compare.  Only recently have spectra been able to be calculated with acceptable accuracy from models of electronic and nuclear structure. Generating predictive spectra from model and simulation can be a difficult undertaking because the number of degrees of freedom for a so-called \emph{full configuration} solution increases exponentially (or factorially!) for each additional electron found in the system. Full configuration calculations are ideal for capturing \emph{all} of the physics of a system, but come at great computational expense as every interaction between each particle must be accounted for in the Hamiltonian and the second-order differential \emph{Schr\"odinger Equation} solved numerically.  If atomic nuclear dynamics are also modeled, this increases the complexity even further as each solution for each time step.  Consequently, approximations and computational algorithms that minimize the complexity and computational cost of a model are highly valued in the field. Techniques for reducing or removing the necessity of small time-steps and long timescales are also of great utility, as dynamical simulations examining nuclear motion often require picosecond timescales to capture the physics of interest whereas models examining electronic dynamics require femtosecond timescales.\\ 
 
 \par Things are not so bleak, however, as there is an abundance of mathematical techniques for reducing the scale of such problems. This study focuses on one such technique called \emph{Compressed Sensing} (CS) that is used in data analysis to reduce the necessary sampling rate. CS does this by assuming a high degree of sparsity in a signal and makes use of the $L^{1}$ norm minimization technique to locate the vector of signal transform coefficients that is the most sparse.  As CS is frequently applied to time-frequency analysis problems, we apply it to modeled chemical spectra which heavily feature Fourier analysis for signal resolution.  This particular investigation focuses on \emph{Optical Absorption Spectroscopy} -- an electronic process in molecular systems where electrons are excited to higher discrete quantum states upon absorption of incident photons. \\ 
  
@@ -49,44 +49,7 @@ Abstract
 % SECTION II -- THEORETICAL BACKGROUND
 
 \section*{II.	Theoretical Background}	%J and Camille	
-\subsection*{A.	An Introduction to Optical Absorption Spectroscopy} %Camille
-
-\par Spectroscopy is a useful and highly utilized technique throughout the field of chemistry that investigates how a molecule or material interacts with electromagnetic radiation. One commonly used form of this general technique is that of optical absorption spectroscopy, wherein light is used as a probe of the properties and functionalities of compounds. In UV-visible spectroscopy (UV-vis), for example, a sample is exposed to light in the ultraviolet and visible range of wavelength. When a particular wavelength corresponds with the energy gap between energy levels of the molecule, electrons can be excited into higher energy molecular orbitals. A typical spectrum in this technique will plot absorbance as a function of wavelength, where absorbance is given by:
-
-\begin{align}\label{eq:abs}
-A = \log_{10}{(I_0/I)}
-\end{align}
-
-where I$_0$ is the intensity of the incident light and I is the intensity of the light after passing through a sample. Thus, for a range of wavelengths, spectra will show peaks at wavelengths which correspond to light being absorbed to excite an electron to a different energetic state. One can see how modeled data of such a spectrum lends itself well to the compressive sensing technique. Although this will be further discussion in section C, have absorbance features for only a few wavelengths will translate to there being sparsity in any matrix representing absorption spectroscopy data. 
-
-\subsection*{B.	Real-Time Time-Dependent Density Functional Theory (RT-TDDFT)} %J 
-
-\par The simulated spectra to which we apply CS in this investigation were generated from a \emph{Real-Time Time-Dependent Density Functional Theory} (RT-TDDFT) calculation. To explain this, some background is needed. Essentially, electrons can be considered to exist as waves around an atomic nucleus in what are known as \emph{wavefunctions}.  When multiple atoms are bonded together, the single electron atomic wavefunctions are summed as a linear combination to form molecular wavefunctions (also called \emph{spin orbitals}.) Molecular spin orbitals may be combined with those of electrons with antiparallel spin to form \emph{spatial orbitals} which, when the modulus squared is taken represent the probability of finding an electron in that region of space about a nucleus.\\
-
-\par Density Functional Theory is based on a theorem called the Hohenberg-Kohn theorem, the first part of which shows that for all electron density functions there exists a unique energy functional corresponding to each density state.  The wavefunctions (or orbitals) come into play when we consider the density of electrons around the nucleus to be a function of the electronic \emph{wavefunction}.  We use idealized, variationally optimized electron wavefunctions called \emph{Kohn-Sham orbitals} to calculate the density from which the energy functional is calculated. However, the exact form of the unique energy functional is unknown in the general case, so quantities that contribute to the overall energy such as electronic exchange (the energy necessary to exchange the positions of two electrons of antiparallel spins) and the electron correlation energies must be corrected to obtain an accurate calculation.  In most DFT methodologies, the first principles (\emph{ab initio}) energy functional is corrected at each point in space by an \emph{Exchange Correlation functional} which is typically a semiempirical correction which accounts for artifacts in the kinetic and electronic exchange terms.\\
-
-\par Time-Dependent Density Functional Theory (TDDFT) then takes the system of interest and calculates the energy functional for each individual time step, then propagates it in time by applying a unitary operator to the density matrix (which describes the electron density for the entire system) with the end goal of resolving electronic dynamics for the system over a given simulation time.  What \emph{Real-Time} TDDFT does is propagate the density matrix according to the TDDFT equation
-\begin{equation}\label{eq:tddft}
-	i\frac{d\mathbf{P}(t)}{dt} = [\mathbf{K}(t), \mathbf{P}(t)]
-\end{equation}
-where the right side of the equation is a commutator, $\mathbf{K}(t)$ is the Kohn-Sham matrix, and $\mathbf{P}(t)$ is the density matrix.  Matrix $\mathbf{K}(t)$ is obtained by projecting the previously mentioned Kohn-Sham orbital wavefunctions (eigenstates) onto a space spanned by a set of supporting functions. Subsequently, the electron dynamics are simulated in real-time by propagating the \emph{density matrix} using a unitary time-evolution operator $\mathbf{U}(t_{n})$ expressed in the same eigenbasis as the Kohn-Sham matrix operator at time $t$.  The time evolution can be expressed as, for 
-
-\begin{equation}\label{eq:prop}
-\begin{split}
-	\mathbf{U}(t_{n}) = exp[-i \cdot\Delta t \cdot \mathbf{K}(t_{n})]\\
-	=\mathbf{C}(t_{n})\cdot[-i\cdot\Delta t \cdot \epsilon (t_{n})]\cdot \mathbf{C}^{\dag}(t_{n})
-\end{split}
-\end{equation}
-
-where
-
-\begin{equation}\label{eq:evol}
-	\mathbf{P}(t_{n+1}) = \mathbf{U}(t_{n})\cdot\mathbf{P}(t_{n-1})\cdot\mathbf{U}^{\dag}(t_{n}).
-\end{equation}
-
-\par From the density matrix for each iteration, our transition dipole moment data (and pattern of oscillation with respect to time) is calculated and tabulated using the electron density function.  This is the source of the data we use in this investigation into compressive sensing.
-
-\subsection*{C.	Compressive Sensing}	%Joe
+\subsection*{A.	Compressive Sensing}	%Joe
 
 \par Traditional methods of time-frequency analysis such as the Fourier transform require that one gathers enough data to exceed the Nyquist rate. However, in the spirit of other dimensional reduction algorithms, there are many signals of interest that are sparse. That is there exists a ``best" simple representation. In particular, we posit \textit{a priori} that only a small number of Fourier coefficients are nonzero. If this is the case, then the task of finding the Fourier coefficients can be greatly simplified. \\
 
@@ -116,9 +79,43 @@ In the case that we assume $N > n$, this system is underdetermined and will in g
 \end{equation}
 
 where $\eta$ is a threshold level.
-\subsubsection*{D.	Applications to Chemical Spectroscopy}	%J and Camille?
 
-\par In the case of chemical spectroscopy, the quantized nature of energy leads to a finite set of allowed frequencies absorbed during an electronic excitation process. 
+\subsection*{B.	An Introduction to Optical Absorption Spectroscopy} %Camille
+
+\par Spectroscopy is a useful and highly utilized technique throughout the field of chemistry that investigates how a molecule or material interacts with electromagnetic radiation. One commonly used form of this general technique is that of optical absorption spectroscopy, wherein light is used as a probe of the properties and functionalities of compounds. In UV-visible spectroscopy (UV-vis), for example, a sample is exposed to light in the ultraviolet and visible range of wavelength. When a particular wavelength corresponds with the energy gap between energy levels of the molecule, electrons can be excited into higher energy molecular orbitals. A typical spectrum in this technique will plot absorbance as a function of wavelength, where absorbance is given by:
+
+\begin{align}\label{eq:abs}
+A = \log_{10}{(I_0/I)}
+\end{align}
+
+where I$_0$ is the intensity of the incident light and I is the intensity of the light after passing through a sample. Thus, for a range of wavelengths, spectra will show peaks at wavelengths which correspond to light being absorbed to excite an electron to a different energetic state. One can see how modeled data of such a spectrum lends itself well to the compressive sensing technique. In the case of chemical spectroscopy, the quantized nature of energy leads to a finite set of allowed frequencies absorbed during an electronic excitation process.
+
+\subsection*{C.	Real-Time Time-Dependent Density Functional Theory (RT-TDDFT)} %J 
+
+\par The simulated spectra to which we apply CS in this investigation were generated from a \emph{Real-Time Time-Dependent Density Functional Theory} (RT-TDDFT) calculation. To explain this, some background is needed. Essentially, electrons can be considered to exist as waves around an atomic nucleus in what are known as \emph{wavefunctions}.  When multiple atoms are bonded together, the single electron atomic wavefunctions are summed as a linear combination to form molecular wavefunctions (also called \emph{spin orbitals}.) Molecular spin orbitals may be combined with those of electrons with antiparallel spin to form \emph{spatial orbitals} which, when the modulus squared is taken represent the probability of finding an electron in that region of space about a nucleus.\\
+
+\par Density Functional Theory is based on a theorem called the Hohenberg-Kohn theorem, the first part of which shows that for all electron density functions there exists a unique energy functional corresponding to each density state.  The wavefunctions (or orbitals) come into play when we consider the density of electrons around the nucleus to be a function of the electronic \emph{wavefunction}.  We use idealized, variationally optimized electron wavefunctions called \emph{Kohn-Sham orbitals} to calculate the density from which the energy functional is calculated. However, the exact form of the unique energy functional is unknown in the general case, so quantities that contribute to the overall energy such as electronic exchange (the energy necessary to exchange the positions of two electrons of antiparallel spins) and the electron correlation energies must be corrected to obtain an accurate calculation.  In most DFT methodologies, the first principles (\emph{ab initio}) energy functional is corrected at each point in space by an \emph{Exchange Correlation functional} which is typically a semiempirical correction which accounts for artifacts in the kinetic and electronic exchange terms.\\
+
+\par What \emph{Real-Time} TDDFT does is propagate the density matrix according to the TDDFT equation
+\begin{equation}\label{eq:tddft}
+	i\frac{d\mathbf{P}(t)}{dt} = [\mathbf{K}(t), \mathbf{P}(t)]
+\end{equation}
+where the right side of the equation is a commutator, $\mathbf{K}(t)$ is the Kohn-Sham matrix, and $\mathbf{P}(t)$ is the density matrix.  Matrix $\mathbf{K}(t)$ is obtained by projecting the previously mentioned Kohn-Sham orbital wavefunctions (eigenstates) onto a space spanned by a set of supporting functions. Subsequently, the electron dynamics are simulated in real-time by propagating the \emph{density matrix} using a unitary time-evolution operator $\mathbf{U}(t_{n})$ expressed in the same eigenbasis as the Kohn-Sham matrix operator at time $t$.  The time evolution can be expressed as, for 
+
+\begin{equation}\label{eq:prop}
+\begin{split}
+	\mathbf{U}(t_{n}) = exp[-i \cdot\Delta t \cdot \mathbf{K}(t_{n})]\\
+	=\mathbf{C}(t_{n})\cdot[-i\cdot\Delta t \cdot \epsilon (t_{n})]\cdot \mathbf{C}^{\dag}(t_{n})
+\end{split}
+\end{equation}
+
+where
+
+\begin{equation}\label{eq:evol}
+	\mathbf{P}(t_{n+1}) = \mathbf{U}(t_{n})\cdot\mathbf{P}(t_{n-1})\cdot\mathbf{U}^{\dag}(t_{n}).
+\end{equation}
+
+\par From the density matrix for each iteration, our transition dipole moment data (and pattern of oscillation with respect to time) is calculated and tabulated using the electron density function.  This is the source of the data we use in this investigation into compressive sensing.
 
 % SECTION III -- ALGORITHM IMPLEMENTATION AND DEVELOPMENT
 
