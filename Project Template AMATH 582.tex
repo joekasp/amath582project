@@ -69,8 +69,19 @@ where I$_0$ is the intensity of the incident light and I is the intensity of the
 \begin{equation}
 	i\frac{d\mathbf{P}(t)}{dt} = [\mathbf{K}(t), \mathbf{P}(t)]
 \end{equation}
-where the right side of the equation is a commutator, $\mathbf{K}(t)$ is the Kohn-Sham matrix, and $\mathbf{P}(t)$ is the density matrix.  Matrix $\mathbf{K}(t)$ is obtained by projecting the previously mentioned Kohn-Sham orbitals into a support basis.  
+where the right side of the equation is a commutator, $\mathbf{K}(t)$ is the Kohn-Sham matrix, and $\mathbf{P}(t)$ is the density matrix.  Matrix $\mathbf{K}(t)$ is obtained by projecting the previously mentioned Kohn-Sham orbital wavefunctions (eigenstates) onto a space spanned by a set of supporting functions. Subsequently, the electron dynamics are simulated in real-time by propagating the \emph{density matrix} using a unitary time-evolution operator $\mathbf{U}(t_{n})$ expressed in the same eigenbasis as the Kohn-Sham matrix operator at time $t$.  The time evolution can be expressed as, for 
+\begin{equation}
+\begin{split}
+	\mathbf{U}(t_{n}) = exp[-i \cdot\Delta t \cdot \mathbf{K}(t_{n})]\\
+	=\mathbf{C}(t_{n})\cdot[-i\cdot\Delta t \cdot \epsilon (t_{n})]\cdot \mathbf{C}^{\dag}(t_{n})
+\end{split}
+\end{equation}
+where
+\begin{equation}
+	\mathbf{P}(t_{n+1}) = \mathbf{U}(t_{n})\cdot\mathbf{P}(t_{n-1})\cdot\mathbf{U}^{\dag}(t_{n}).
+\end{equation}
 
+\par From the density matrix for each iteration, our transition dipole moment data (and pattern of oscillation with respect to time) is calculated and tabulated using the electron density function.  This is the source of the data we use in this investigation into compressive sensing.
 
 \subsection*{C.	Compressive Sensing}	%Joe
 
@@ -149,7 +160,9 @@ At this point, setting $\tau$ = 150 for a 50000 time-step simulation, the functi
 \end{equation}
 
 yields the polarizability tensor $\mathbf{\alpha}$ such that each component $\alpha_{ij}$ (for $i,j = x,y,z$) allows us to calculate the photon absorption cross-section for the molecule given by the equation
-$$\sigma(\omega) = \frac{4 \pi \omega}{3c}  \Im\sum_{i = x, y, z} \alpha_{ii}(\omega)$$
+\begin{equation}
+	\sigma(\omega) = \frac{4 \pi \omega}{3c}  \Im\sum_{i = x, y, z} \alpha_{ii}(\omega)
+\end{equation}
 where we see the absorption cross section is simply the imaginary part of the trace of the polarizability tensor.  The frequency spectrum is plotted for $\sigma$ as a function of frequency $\omega$.
 
 \subsubsection*{(3.)	Process for CS}
@@ -205,7 +218,11 @@ In order to test the validity of our CS algorithm for data reconstruction, we fi
 
 \section*{V.	Summary and Conclusions} %J with input from Joe and Shichao 
 
-\par As shown above, the compressed sensing technique was able to capture the absorption spectrum to a least semi-quantitative accuracy. In practice this is good enough for most applications. This has profound implications for the computational chemistry community as it allows for highly accurate calculations to be run for a shorter period of time without sacrificing much in the quality of results.\\ Our tests above utilized the SPGL1 basis pursuit method due to its speed advantage over other L1 minimization algorithms such as CVX. However, other possible methods for further reducing the time of calculation include running a coarse calculation first to determine key windows of interest, followed by a second fine-grained spectra (artificially setting some of the rows in the Fourier matrix to zero). Additionally, while this implementation of compressed sensing was carried out in the MATLAB environment, much of our group workflow uses Python and associated SciPy packages. Porting the scripts to Python would facilitate quick analysis that is more automated and less prone to error.\\Finally, since we were able to demonstrate a useful signal reconstruction using CS, this technique may now be applied as an option in our RT-TDDFT program.  This would reduce the simulation run time requirement for resolving the features of interest in simulated spectra.\\ 
+\par As shown above, the compressed sensing technique was able to capture the absorption spectrum to a least semi-quantitative accuracy. In practice this is good enough for most applications. This has profound implications for the computational chemistry community as it allows for highly accurate calculations to be run for a shorter period of time without sacrificing much in the quality of results.\\ 
+
+Our tests above utilized the SPGL1 basis pursuit method due to its speed advantage over other L1 minimization algorithms such as CVX. However, other possible methods for further reducing the time of calculation include running a coarse calculation first to determine key windows of interest, followed by a second fine-grained spectra (artificially setting some of the rows in the Fourier matrix to zero). Additionally, while this implementation of compressed sensing was carried out in the MATLAB environment, much of our group workflow uses Python and associated SciPy packages. Porting the scripts to Python would facilitate quick analysis that is more automated and less prone to error.\\
+
+Finally, since we were able to demonstrate a useful signal reconstruction using CS, this technique may now be applied as an option in our RT-TDDFT program.  This would reduce the simulation run time requirement for resolving the features of interest in simulated spectra.\\ 
 
 
 \pagebreak
