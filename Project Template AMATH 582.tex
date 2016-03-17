@@ -192,13 +192,13 @@ The spectrum is plotted as $\sigma(\omega)$ with respect to $\omega$.
 In order to test the validity of our CS algorithm for data reconstruction, we first applied it to idealized data sets represented by known linear combinations of sinusoidal functions. Having knowledge of the exact "signal" \emph{a priori} allows us to determine the sampling rates and discrete transforms that result in the best approximations under ideal conditions. 
 
 \begin{figure}[H]
-\includegraphics[scale = 0.8]{Figures/idealsig_shortsample.png}
+\includegraphics[scale = 0.8]{idealsig_shortsample.png}
 \caption{Plot of ideal sample in the time domain as well as a small sample size that corresponds to 20\% of the total sample size.}
 \label{fig:idealsig}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics[scale = 0.7]{Figures/samplingtimes_ideal_test.png}
+\includegraphics[scale = 0.7]{samplingtimes_ideal_test.png}
 \caption{The black dashed line represents the Fourier transform of the small sample size of the ideal signal while the solid blue line shows the recreated spectrum using the CS technique. The plots, from top to bottom, represent using 5, 10, 15, 20, and 25\% of the full data set, while the Fourier transform of the ideal signal is shown at the bottom.}
 \label{fig:idealsamplerates}
 \end{figure}
@@ -209,37 +209,37 @@ In order to test the validity of our CS algorithm for data reconstruction, we fi
 \subsection*{B.	Simulated Optical Absorption Spectra Cases}
 
 \begin{figure}[H]
-\includegraphics[scale = 0.7]{Figures/fulldipolemoment.png}
+\includegraphics[scale = 0.7]{fulldipolemoment.png}
 \caption{Simulated data showing the oscillating dipole moment in 3 dimensions. Units are in atomic units, where time is shown as $\hbar / E_h$, corresponding to the SI units of seconds.}
 \label{fig:fulldipole}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics[scale = 0.7]{Figures/dipole_smallsample.png}
+\includegraphics[scale = 0.7]{dipole_smallsample.png}
 \caption{Oscillating dipole moment in 3 dimensions of a small sampling size of the full data. These plots show 400 of the 50,000 time steps of data.}
 \label{fig:partdipole}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics[scale = 0.8]{Figures/ftoffulldata.png}
+\includegraphics[scale = 0.8]{ftoffulldata.png}
 \caption{Fourier transform of the full 50,000 point data set of the simulated absorption spectrum of water.}
 \label{fig:fullFT}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics[scale = 0.6]{Figures/FT_comp.png}
+\includegraphics[scale = 0.6]{FT_comp.png}
 \caption{Comparison of the Fourier transform of three sampling sizes of the simulated absorption data set. The gray dashed line represents the transform of 400 points (0.8\%), the dark green line represents 1200 points (2.4\%), and the turquoise line represents the transform of 2000 points (4\%).}
 \label{fig:FTcomp}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics[scale = 0.6]{Figures/CS_comp.png}
+\includegraphics[scale = 0.6]{CS_comp.png}
 \caption{Comparison of the compressing sensing technique applied to two different sampling sizes of the simulated absorption data set. The gray line represents a sampling size of 400 points (0.8\%), the dark green line represents 1200 points (2.4\%).}
 \label{fig:CScomp}
 \end{figure}
 
 \begin{figure}[H]
-\includegraphics[scale = 0.6]{Figures/wandwodamping.png}
+\includegraphics[scale = 0.6]{wandwodamping.png}
 \caption{Comparison of compressed sensing with high and low amount of damping. The green trace is with a high amount of damping (damping constant $\tau$ set to 1500) and the gray trace was with low damping ($\tau$ set to 15).}
 \end{figure}
 
