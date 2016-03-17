@@ -186,13 +186,29 @@ The spectrum is plotted as $\sigma(\omega)$ with respect to $\omega$.
 %IDEAL CASES
 
 \subsection*{A.	Ideal Data Cases}
-In order to test the validity of our CS algorithm for data reconstruction, we first applied it to idealized data sets represented by known linear combinations of sinusoidal functions. Having knowledge of the exact "signal" \emph{a priori} allows us to determine the sampling rates and discrete transforms that result in the best approximations under ideal conditions. 
+In order to test the validity of our CS algorithm for data reconstruction, we first applied it to idealized data sets represented by known linear combinations of sinusoidal functions. 
 
-%\begin{figure}[H]
-%\includegraphics[scale = 0.8]{BWDerekVarSigma}
-%\caption{Four different values of $\sigma$ applied to linear Gaussian filter to denoise \emph{Figure 3}}
-%\end{figure}
-%\pagebreak
+\begin{figure}[h!] \label{fig:isamp}
+	\centering
+	\includegraphics[width = 7cm]{Idealsamp.png}
+	\caption{A ``full" idealized signal and an example of a short sample taken.}
+\end{figure}
+Having \emph{a priori} knowledge of the exact ``signal" allows us to determine the sampling rates and discrete transforms that result in the best approximations under ideal conditions. In Figure~\ref{fig:isamp} the signal is given by
+
+\begin{equation}
+	S(t) = 2 \sin(10 t/2\pi) + 2 \sin(7 t/2\pi) + 3 \cos(2 t/2\pi)
+\end{equation} 
+The time domain was of unit length and discretized with 2000 points. To normalize this to a $2 \pi$ periodic domain (as assumed by the Fourier transform) the mapping $t \rightarrow \frac{t}{2\pi}$ is used. Thus by construction the frequencies are at 10, 7, and 2 Hz, respectively.
+
+\begin{figure}[h!] \label{fig:icomp}
+	\centering
+	\includegraphics[width = 9.5cm]{Idealcomp.png}
+	\caption{Comparison of using the Fourier transform (dashed line) and applying compressed sensing (solid line) to sampled data.}
+\end{figure}
+
+A variety of sample lengths were tested using both the Fourier transform and compressed sensing algorithms. 
+
+\pagebreak
 
 % SIMULATED CASES
 
