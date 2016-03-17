@@ -42,9 +42,9 @@ Abstract
 
 \par Things are not so bleak, however, as there is an abundance of mathematical techniques for reducing the scale of such problems. This study focuses on one such technique called \emph{Compressed Sensing} (CS) that is used in data analysis to reduce the necessary sampling rate. CS does this by assuming a high degree of sparsity in a signal and makes use of the $L^{1}$ norm minimization technique to locate the vector of signal transform coefficients that is the most sparse.  As CS is frequently applied to time-frequency analysis problems, we apply it to modeled chemical spectra which heavily feature Fourier analysis for signal resolution.  This particular investigation focuses on \emph{Optical Absorption Spectroscopy} -- an electronic process in molecular systems where electrons are excited to higher discrete quantum states upon absorption of incident photons. \\ 
  
-\par Modeling absorption spectra computationally presents a unique challenge since the propagation of electronic states through time is the fundamental process behind the generation of experimentally observable spectra.  Several schemes exist for performing calculations that capture electron dynamics, however here we focus only on simulated spectra obtained through a \emph{Real-Time Time-Dependent Density Functional Theory} (RT-TDDFT) scheme which solves electron dynamics by self-consistently solving a set of pseudoeigenvalue equations of electronic wavefunctions for each iteration in time, then solving an electron density functional equation based on those wavefunctions.  The calculations are performed while holding the nuclear positions fixed (using the \emph{Born-Oppenheimer approximation}) in order to reduce the number of degrees of freedom in the system of interest.  As one can imagine, this can become prohibitively expensive for large systems with many electrons or large numbers of time steps; therefore we seek to find the best CS sampling rate to reduce the number of necessary time steps to achieve satisfactory optical absorption spectral resolution for molecular systems. \\
+\par Modeling absorption spectra computationally presents a unique challenge since the propagation of electronic states through time is the fundamental process behind the generation of experimentally observable spectra.  Several schemes exist for performing calculations that capture electron dynamics, however here we focus only on simulated spectra obtained through a \emph{Real-Time Time-Dependent Density Functional Theory} (RT-TDDFT) scheme which solves electron dynamics by self-consistently solving a set of pseudoeigenvalue equations of electronic wavefunctions for each iteration in time, then solving an electron density functional equation based on those wavefunctions.  The calculations are performed while holding the nuclear positions fixed (using the \emph{Born-Oppenheimer approximation}) in order to reduce the number of degrees of freedom in the system of interest.  As one can imagine, this can become prohibitively expensive for large systems with many electrons or large numbers of time steps; therefore we seek to find the best CS sampling rate to reduce the number of necessary time steps to achieve satisfactory optical absorption spectral resolution for molecular systems. In principle we can generalize this technique for other simulated chemical spectra.\\
 
-\par This investigation divides the examination of compressed sensing into two parts.  \emph{Part One} compares the output of the Fast Fourier Transform (FFT), Discrete Sine Transform (DST), and Discrete Cosine Transform (DCT) when applied within a CS algorithm to an idealized, known linear combination of sinusoidal functions representing our absorption signal.  \emph{Part Two} explores the application of CS utilizing the SPGL$_{1}$ $L^{1}$ norm minimization algorithm to our simulated spectra for water obtained by RT-TDDFT calculations.  All code is implemented in MATLAB (see \emph{Appendix B}.)
+\par This investigation divides the examination of compressed sensing into two parts.  \emph{Part One} compares the output of the Fast Fourier Transform (FFT) of our sampling subset with the, Discrete Sine Transform (DST) within the CS algorithm to an idealized, known linear combination of sinusoidal functions representing our absorption signal.  \emph{Part Two} explores the application of CS to simulated optical absorption spectra for water obtained by RT-TDDFT calculations of electric dipole oscillations.  The $L^{1}$ norm minimization is carried out using the SPGL$_{1}$  algorithm as implemented in MATLAB (see \emph{Appendix A}) and all code is implemented in MATLAB (see \emph{Appendix B}).
 
 % SECTION II -- THEORETICAL BACKGROUND
 
@@ -160,30 +160,22 @@ where $\tau$ is a our damping constant, and we damp the time series by applying 
 \end{equation}
 
 At this point, setting $\tau$ = 150 for a 50000 time-step simulation, the function is damped such that only the first 500 or so time iterations are relevant, and the remainder may be truncated.  Applying the Fourier Transform to the damped dipole time series 
+
 \begin{equation}\label{eq:pol}
 	\alpha_{ij}(\omega) = \frac{1}{\kappa_{i}}\int_{0}^{\infty}  e^{i\omega t} [p_{j}(t) - p_{j}(t_{0})] dt
 \end{equation}
 
 yields the polarizability tensor $\mathbf{\alpha}$ such that each component $\alpha_{ij}$ (for $i,j = x,y,z$) allows us to calculate the photon absorption cross-section for the molecule given by the equation
-\begin{equation}\label{eq:csec}
+\begin{equation}\label{eq:fftcross}
 	\sigma(\omega) = \frac{4 \pi \omega}{3c}  \Im\sum_{i = x, y, z} \alpha_{ii}(\omega)
 \end{equation}
 where we see the absorption cross section is simply the imaginary part of the trace of the polarizability tensor.  The frequency spectrum is plotted for $\sigma$ as a function of frequency $\omega$.
 
 \subsubsection*{(3.)	Process for CS}	%This needs to be edited to reflect Joe's notation in the intro!!! 
 
-In contrast, the Compressive Sensing algorithm uses a different process that does not require damping.  The dipole moments and polarizability tensor are constructed similarly to the FFT scheme, but after this step the processes are wildly different. Here, we calculate $h_{j}(t) - h_{j}(t_{0})$ and build the $\mathbf{F}$ matrix as a Discrete Sine Transform (DST) matrix of size $N \times N$, and matrix $\mathbf{f}$ of size $M \times N$  for a subset of size $m <<< n$ of the dipole time series (of size $N \times N$).  The $L^{1}$ norm optimization of the coefficient vector $\mathbf{g}$ in 
-\begin{equation}
-	\mathbf{F}\mathbf{g} = \mathbf{h}
-\end{equation}
+\par In contrast, the Compressive Sensing algorithm uses a different process that does not require damping.  The dipole moments and polarizability tensor are constructed similarly to the FFT scheme, but after this step the processes are wildly different. Here, we calculate $h_{j}(t) - h_{j}(t_{0})$ and build the $\mathbf{F}$ matrix of size $N \times N$ from equation (\ref{eq:dst}), and matrix $\mathbf{f}$ of size $M \times N$  for a subset of size $m <<< n$ of the dipole time series (of size $N \times N$).  The $L^{1}$ norm optimization of the coefficient vector $\mathbf{g}$ in equation (\ref{eq:Fgh}) is obtained by applying the SPGL1 algorithm in MATLAB to perform the optimization using the Basis Pursuit (BP) method using equation (\ref{eq:bpdn}) to remove noise while performing the $L^{1}$ norm minimization of $\mathbf{g}$ and where $\eta$ is a threshold value. This technique is applied to all three spatial components $\mathbf{a}_{w}$ (where $w = x,y,z$) of the polarizability tensor to obtain the sparsest possible $\mathbf{g}$ coefficient array of values $g_{k}$.  Subsequently, the absorption cross section $\sigma(\omega)$ is calculated from an equation similar to that used for calculating the same quantity in the FFT algorithm:
 
-is obtained by applying the SPGL1 algorithm in MATLAB to perform the optimization using the Basis Pursuit (BP) method where\\
-\begin{center}
-$min |\mathbf{a}|_{1}$ subject to $|\mathbf{f}\mathbf{a} - \mathbf{p}| < \eta$\\
-\end{center}
-and where $\eta$ is a threshold value. This technique is applied to all three spatial components $\mathbf{a}_{w}$ (where $w = x,y,z$) of the polarizability tensor to obtain the sparsest possible $\mathbf{a}$ coefficient array.  Subsequently, the absorption cross section $\sigma(\omega)$ is calculated from an equation similar to that used for calculating the same quantity in the FFT algorithm:
-
-\begin{equation}
+\begin{equation}\label{eq:cscross}
 	\sigma(\omega) = \frac{4\pi\omega}{3c}\sum_{w = x,y,z}\mathbf{a}_{w}(\omega).
 \end{equation}
 
@@ -231,8 +223,6 @@ Finally, since we were able to demonstrate a useful signal reconstruction using 
 
 
 \pagebreak
-%REFERENCES----------------------------------------------------------------------------------------------
-\section*{References}
 
 
 
@@ -243,7 +233,19 @@ Finally, since we were able to demonstrate a useful signal reconstruction using 
 
 \section{MATLAB Functions and Implementations}
 
-\subsection*{function subsection}
+\subsection*{fft}
+
+\subsection*{fftshift}
+
+\subsection*{csvread}
+
+\subsection*{spg\_bpdn}
+
+\subsection*{spg\_bp}
+
+\subsection*{find}
+
+\subsection*{toc}
 
 % MATLAB CODE SECTION ------------------------------------------------------------------------------
 \section{MATLAB Code}
@@ -285,13 +287,6 @@ for j = 1:n
         F(j,k) = (2/pi)*deltaOmega*sin(j*t(k));
     end
 end
-
-% % generate Discrete Cosine matrix
-% for j = 1:n
-%     for k = 1:N
-%         F(j,k) = (2/pi)*deltaOmega*cos(j*t(k));
-%     end
-% end
 
 %solve the equation F*x = samp
 sigma = 0.05;
@@ -429,10 +424,9 @@ plot(w(1:np),sigma(1:np))
 toc
 \end{verbatim}
 
-\section{Custom MATLAB Functions} 	%Use subsections for each one
+%\section{Custom MATLAB Functions} 	%Use subsections for each one
 
-\subsection*{Custom MATLAB Function 1}
-
+%\subsection*{Custom MATLAB Function 1}
 
 \end{appendices}
 
