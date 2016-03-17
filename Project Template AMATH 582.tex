@@ -230,18 +230,24 @@ Finally, since we were able to demonstrate a useful signal reconstruction using 
 \section{MATLAB Functions and Implementations}
 
 \subsection*{fft}
+The \emph{fft()} function takes the one-dimensional discrete Fourier Transform of a array.  However, due to the structure of the algorithm, the left and right sides of an output are such that the center frequency is located on either end of the array, and \emph{fftshift()} is needed to place the center frequency at the center of the array in the $\omega$-domain.
 
 \subsection*{fftshift}
+The \emph{fftshift} function takes the output frequency array from the discrete Fourier Transform given by \emph{fft()} and translates the right side of the array to the left, and the left to the right in order to place the center frequency at the center of the array.  
 
 \subsection*{csvread}
+The \emph{csvread()} function reads a .csv (comma-separated value) file from the working directory and returns the data in .m format for use with MATLAB.
 
 \subsection*{spg\_bpdn}
+The \emph{spg\_bpdn()} is part of the SPGL1 package which carries out Basis Pursuit Denoising (BPDN) on equation (\ref{eq:bpdn}). It does so by performing an $L^{1}$ minimization on the array containing discrete transformation coefficients ($\mathbf{g}$) until equation (\ref{eq:bpdn}) is satisfied. It takes as input arguments:  matrix $F$, array $\mathbf{h}$, and the denoising threshold parameter $\eta$ and outputs the optimally sparse frequency coefficient vector $\mathbf{g}$.
 
 \subsection*{spg\_bp}
+The \emph{spg\_bp()} function is also part of the SPGL1 package that performs a Basis Pursuit $L^{1}$ minimization subject to the equation $ | F \mathbf{g} - \mathbf{h} | = 0$ which returns the optimally sparse $\mathbf{g}$ array of frequencies.  Input arguments are matrix $F$ and array $\mathbf{h}$.  This minimization procedure takes somewhat longer than BPDN, but is more broadly applicable.  
 
 \subsection*{find}
+The \emph{find} function returns the linear indices $\mathbf{I}$ of corresponding to the nonzero entries of an input array. 
 
-\subsection*{toc}
+\pagebreak
 
 % MATLAB CODE SECTION ------------------------------------------------------------------------------
 \section{MATLAB Code}
