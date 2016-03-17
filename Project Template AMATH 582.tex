@@ -171,7 +171,7 @@ yields the polarizability tensor $\mathbf{\alpha}$ such that each component $\al
 \end{equation}
 where we see the absorption cross section is simply the imaginary part of the trace of the polarizability tensor.  The frequency spectrum is plotted for $\sigma$ as a function of frequency $\omega$.
 
-\subsubsection*{(3.)	Process for CS}	%This needs to be edited to reflect Joe's notation in the intro!!! 
+\subsubsection*{(3.)	Process for CS}	
 
 \par In contrast, the Compressive Sensing algorithm uses a different process that does not require damping.  The dipole moments and polarizability tensor are constructed similarly to the FFT scheme, but after this step the processes are wildly different. Here, we calculate $h_{j}(t) - h_{j}(t_{0})$ and build the $\mathbf{F}$ matrix of size $N \times N$ from equation (\ref{eq:dst}), and matrix $\mathbf{f}$ of size $M \times N$  for a subset of size $m <<< n$ of the dipole time series (of size $N \times N$).  The $L^{1}$ norm optimization of the coefficient vector $\mathbf{g}$ in equation (\ref{eq:Fgh}) is obtained by applying the SPGL1 algorithm in MATLAB to perform the optimization using the Basis Pursuit (BP) method using equation (\ref{eq:bpdn}) to remove noise while performing the $L^{1}$ norm minimization of $\mathbf{g}$ and where $\eta$ is a threshold value. This technique is applied to all three spatial components $\mathbf{a}_{w}$ (where $w = x,y,z$) of the polarizability tensor to obtain the sparsest possible $\mathbf{g}$ coefficient array of values $g_{k}$.  Subsequently, the absorption cross section $\sigma(\omega)$ is calculated from an equation similar to that used for calculating the same quantity in the FFT algorithm:
 
@@ -221,12 +221,8 @@ Our tests above utilized the SPGL1 basis pursuit method due to its speed advanta
 
 Finally, since we were able to demonstrate a useful signal reconstruction using CS, this technique may now be applied as an option in our RT-TDDFT program.  This would reduce the simulation run time requirement for resolving the features of interest in simulated spectra.\\ 
 
-
 \pagebreak
 
-
-
-\pagebreak
 %APPENDICES-----------------------------------------------------------------------------------------------
 
 \begin{appendices}
