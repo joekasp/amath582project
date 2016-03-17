@@ -51,7 +51,7 @@ Abstract
 \section*{II.	Theoretical Background}	%J and Camille	
 \subsection*{A.	An Introduction to Optical Absorption Spectroscopy} %Camille
 
-Spectroscopy is a useful and highly utilized technique throughout the field of chemistry that investigates how a molecule or material interacts with electromagnetic radiation. One commonly used form of this general technique is that of optical absorption spectroscopy, wherein light is used as a probe of the properties and functionalities of compounds. In UV-visible spectroscopy (UV-vis), for example, a sample is exposed to light in the ultraviolet and visible range of wavelength. When a particular wavelength corresponds with the energy gap between energy levels of the molecule, electrons can be excited into higher energy molecular orbitals. A typical spectrum in this technique will plot absorbance as a function of wavelength, where absorbance is given by:
+\par Spectroscopy is a useful and highly utilized technique throughout the field of chemistry that investigates how a molecule or material interacts with electromagnetic radiation. One commonly used form of this general technique is that of optical absorption spectroscopy, wherein light is used as a probe of the properties and functionalities of compounds. In UV-visible spectroscopy (UV-vis), for example, a sample is exposed to light in the ultraviolet and visible range of wavelength. When a particular wavelength corresponds with the energy gap between energy levels of the molecule, electrons can be excited into higher energy molecular orbitals. A typical spectrum in this technique will plot absorbance as a function of wavelength, where absorbance is given by:
 
 \begin{align}
 A = \log_{10}{(I_0/I)}
@@ -59,9 +59,20 @@ A = \log_{10}{(I_0/I)}
 
 where I$_0$ is the intensity of the incident light and I is the intensity of the light after passing through a sample. Thus, for a range of wavelengths, spectra will show peaks at wavelengths which correspond to light being absorbed to excite an electron to a different energetic state. One can see how modeled data of such a spectrum lends itself well to the compressive sensing technique. Although this will be further discussion in section C, have absorbance features for only a few wavelengths will translate to there being sparsity in any matrix representing absorption spectroscopy data. 
 
-\subsection*{B.	Real-Time Time-Dependent Density Functional Theory (RT-TDDFT)} 
+\subsection*{B.	Real-Time Time-Dependent Density Functional Theory (RT-TDDFT)} %J 
 
-\subsection*{C.	Compressive Sensing}	%J
+\par The simulated spectra to which we apply CS in this investigation were generated from a \emph{Real-Time Time-Dependent Density Functional Theory} (RT-TDDFT) calculation. To explain this, some background is needed. Essentially, electrons can be considered to exist as waves around an atomic nucleus in what are known as \emph{wavefunctions}.  When multiple atoms are bonded together, the single electron atomic wavefunctions are summed as a linear combination to form molecular wavefunctions (also called \emph{spin orbitals}.) Molecular spin orbitals may be combined with those of electrons with antiparallel spin to form \emph{spatial orbitals} which, when the modulus squared is taken represent the probability of finding an electron in that region of space about a nucleus.\\
+
+\par Density Functional Theory is based on a theorem called the Hohenberg-Kohn theorem, the first part of which shows that for all electron density functions there exists a unique energy functional corresponding to each density state.  The wavefunctions (or orbitals) come into play when we consider the density of electrons around the nucleus to be a function of the electronic \emph{wavefunction}.  We use idealized, variationally optimized electron wavefunctions called \emph{Kohn-Sham orbitals} to calculate the density from which the energy functional is calculated. However, the exact form of the unique energy functional is unknown in the general case, so quantities that contribute to the overall energy such as electronic exchange (the energy necessary to exchange the positions of two electrons of antiparallel spins) and the electron correlation energies must be corrected to obtain an accurate calculation.  In most DFT methodologies, the first principles (\emph{ab initio}) energy functional is corrected at each point in space by an \emph{Exchange Correlation functional} which is typically a semiempirical correction which accounts for artifacts in the kinetic and electronic exchange terms.\\
+
+\par Time-Dependent Density Functional Theory (TDDFT) then takes the system of interest and calculates the energy functional for each individual time step, then propagates it in time by applying a unitary operator to the density matrix (which describes the electron density for the entire system) with the end goal of resolving electronic dynamics for the system over a given simulation time.  What \emph{Real-Time} TDDFT does is propagate the density matrix according to the TDDFT equation
+\begin{equation}
+	i\frac{d\mathbf{P}(t)}{dt} = [\mathbf{K}(t), \mathbf{P}(t)]
+\end{equation}
+where the right side of the equation is a commutator, $\mathbf{K}(t)$ is the Kohn-Sham matrix, and $\mathbf{P}(t)$ is the density matrix.  Matrix $\mathbf{K}(t)$ is obtained by projecting the previously mentioned Kohn-Sham orbitals into a support basis.  
+
+
+\subsection*{C.	Compressive Sensing}	%Joe
 
 \par Traditional methods of time-frequency analysis such as the Fourier transform require that one gathers enough data to exceed the Nyquist rate. However, in the spirit of other dimensional reduction algorithms, there are many signals of interest that are sparse. That is there exists a ``best" simple representation. In particular, we posit \textit{a priori} that only a small number of Fourier coefficients are nonzero. If this is the case, then the task of finding the Fourier coefficients can be greatly simplified. \\
 
@@ -188,20 +199,13 @@ In order to test the validity of our CS algorithm for data reconstruction, we fi
 %\pagebreak
 
 
-
-%\begin{figure}[H]
-%\includegraphics[scale = 0.8]{BWDerekVarSigma}
-%\caption{Four different values of $\sigma$ applied to linear Gaussian filter to denoise \emph{Figure 3}}
-%\end{figure}
-%\pagebreak
-
-
-
 %SECTION V. -- SUMMARY AND CONCLUSIONS
 %We need to be sure to include our comparison of transforms and sampling rates with some sort of
 %visualization in this section.  
 
 \section*{V.	Summary and Conclusions} %J with input from Joe and Shichao 
+
+\par As shown above, the compressed sensing technique was able to capture the absorption spectrum to a least semi-quantitative accuracy. In practice this is good enough for most applications. This has profound implications for the computational chemistry community as it allows for highly accurate calculations to be run for a shorter period of time without sacrificing much in the quality of results.\\ Our tests above utilized the SPGL1 basis pursuit method due to its speed advantage over other L1 minimization algorithms such as CVX. However, other possible methods for further reducing the time of calculation include running a coarse calculation first to determine key windows of interest, followed by a second fine-grained spectra (artificially setting some of the rows in the Fourier matrix to zero). Additionally, while this implementation of compressed sensing was carried out in the MATLAB environment, much of our group workflow uses Python and associated SciPy packages. Porting the scripts to Python would facilitate quick analysis that is more automated and less prone to error.\\Finally, since we were able to demonstrate a useful signal reconstruction using CS, this technique may now be applied as an option in our RT-TDDFT program.  This would reduce the simulation run time requirement for resolving the features of interest in simulated spectra.\\ 
 
 
 \pagebreak
